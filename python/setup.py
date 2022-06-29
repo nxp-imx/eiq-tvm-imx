@@ -121,11 +121,6 @@ class BinaryDistribution(Distribution):
 
 include_libs = False
 wheel_include_libs = False
-if not os.getenv("CONDA_BUILD"):
-    if "bdist_wheel" in sys.argv:
-        wheel_include_libs = True
-    else:
-        include_libs = True
 
 setup_kwargs = {}
 
