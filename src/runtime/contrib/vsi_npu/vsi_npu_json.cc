@@ -555,7 +555,12 @@ class VsiNpuJSONRuntime : public JSONRuntimeBase {
     if (node.GetOpName() == "nn.max_pool2d") {
       pool_type = tim::vx::PoolType::MAX;
     } else if (node.GetOpName() == "nn.avg_pool2d" || node.GetOpName() == "qnn.avg_pool2d") {
-      pool_type = tim::vx::PoolType::AVG;
+      auto count_include_pad = node.GetAttr<std::vector<std::string>>("count_include_pad");
+      if (std::stoi(count_include_pad[0]) > 0) {
+          pool_type = tim::vx::PoolType::AVG;
+      } else {
+          pool_type = tim::vx::PoolType::AVG_ANDROID;
+      }
     } else {
       LOG(FATAL) << "Pooling type not supported: " << node.GetOpName();
     }
