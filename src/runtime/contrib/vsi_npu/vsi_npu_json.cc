@@ -153,7 +153,7 @@ class VsiNpuJSONRuntime : public JSONRuntimeBase {
           StridedSlice(nid);
         } else if ("mean" == op_name) {
           Reduce(nid);
-        } else if ("qnn.dequantize" == op_name) {
+        } else if ("qnn.dequantize" == op_name || "qnn.requantize" == op_name) {
           DataConvert(nid);
         } else {
           LOG(FATAL) << "Unsupported op: " << op_name;
@@ -449,9 +449,14 @@ class VsiNpuJSONRuntime : public JSONRuntimeBase {
     auto node = nodes_[nid];
     auto inputs = node.GetInputs();
 
+    std::shared_ptr<tim::vx::Tensor> vsi_output;
     JSONGraphNodeEntry out_entry(nid, 0);
     auto vsi_input = MakeVSITensorFromJSONEntry(inputs[0], &inputs[1], &inputs[2]);
-    auto vsi_output =  MakeVSITensorFromJSONEntry(out_entry);
+    if (inputs.size() == 5U) {
+        vsi_output =  MakeVSITensorFromJSONEntry(out_entry, &inputs[3], &inputs[4]);
+    } else {
+        vsi_output =  MakeVSITensorFromJSONEntry(out_entry);
+    }
 
     auto op = graph_->CreateOperation<tim::vx::ops::DataConvert>();
     (*op).BindInput(vsi_input).BindOutput(vsi_output);

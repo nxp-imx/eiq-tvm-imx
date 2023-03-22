@@ -80,10 +80,16 @@ def init_supported_models():
     m = add_supported_model("inception_v3", where, QUANT)
     m.input_size = 299
 
-    where = "".join(
-               ["https://storage.googleapis.com/tfhub-lite-models/tensorflow/",
-                "lite-model/ssd_mobilenet_v1/1/metadata/1.tflite"])
+    where = "https://storage.googleapis.com/tfhub-lite-models/tensorflow/"
+    where += "lite-model/ssd_mobilenet_v1/1/metadata/1.tflite"
     m = add_supported_model("ssd_mobilenet_v1", "", QUANT, formats="tflite")
+    m.url = where
+    m.inputs = "normalized_input_image_tensor"
+    m.input_size = 300
+
+    where = "https://raw.githubusercontent.com/google-coral/edgetpu/master/test_data/"
+    where += "ssd_mobilenet_v2_coco_quant_postprocess.tflite"
+    m = add_supported_model("ssd_mobilenet_v2_coco_quant_postprocess", "", QUANT, formats="tflite")
     m.url = where
     m.inputs = "normalized_input_image_tensor"
     m.input_size = 300
