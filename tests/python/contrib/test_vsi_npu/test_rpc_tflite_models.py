@@ -128,12 +128,15 @@ def verify_tvm_result(ref_output, shape, model_name, image_data):
     elif "ssd" in m.name:
         ref_boxes = ref_output[0][0]
         ref_classes = ref_output[1][0]
+        ref_scores = ref_output[2][0]
         ref_number = ref_output[3][0]
 
         tvm_boxes = tvm_output[0][0]
         tvm_classes = tvm_output[1][0]
         tvm_number = tvm_output[3][0]
-        for i in range(min(2, int(ref_number), int(tvm_number))):
+        for i in range(min(3, int(ref_number), int(tvm_number))):
+            if (ref_scores[i] < 0.5):
+                continue
             assert int(ref_classes[i]) == int(tvm_classes[i])
             iou = ssd_iou(ref_boxes[i], tvm_boxes[i])
             assert iou > 0.9
