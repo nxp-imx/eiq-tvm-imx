@@ -1,19 +1,19 @@
 NXP Software Content Register
 
-Release - NXPMicro/TVM
+Release - TVM
 
 --------------------------------------------
 Reused external packages
 --------------------------------------------
 
-Package:                     apache/tvm
+Package:                     eiq-tvm-imx.git
 Outgoing License:            Apache License, Version 2.0
-License File:                https://github.com/apache/tvm/blob/main/LICENSE
+License File:                LICENSE
 Package Category:            Apahce TVM project
 Type of Content:             source code
 Description and comments:    Apache TVM is a compiler stack for deep learning systems
 Origin:                      https://github.com/apache/tvm
-Release location: 
+Release location:            https://github.com/nxp-imx/eiq-tvm-imx
 
 --------------------------------------------
 NXP Files
